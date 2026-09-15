@@ -29,3 +29,45 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(79, 140, 255, 0.4);
 }
+
+/* Elegant ambient animations for Emotia Hero Flow */
+@keyframes flowDash {
+  0% {
+    stroke-dashoffset: 48;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pulseSubtle {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes signalPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(79, 140, 255, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(73, 214, 255, 0.35);
+  }
+}
+
+.animate-flow-dash {
+  animation: flowDash 3s linear infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 4s ease-in-out infinite;
+}
+
+.animate-signal-pulse {
+  animation: signalPulse 3.5s ease-in-out infinite;
+}

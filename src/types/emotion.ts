@@ -9,32 +9,63 @@ export type EmotionType =
 
 export type ModalityType = 'face' | 'voice' | 'text' | 'combined';
 
-export interface SignalScore {
+export type AlignmentType = 'agreement' | 'conflict' | 'mixed';
+
+export interface ModalitySignal {
   modality: 'face' | 'voice' | 'text';
   primaryEmotion: EmotionType;
-  confidence: number;
+  confidence: number; // 0 to 1
   scores: Record<EmotionType, number>;
+  valence?: number; // -1 (negative) to +1 (positive) for spectrum positioning
+  explanationCue?: string;
 }
 
-export interface CompoundEmotion {
+export interface TimelineMilestone {
+  timestamp: string; // e.g. "00s", "10s", "20s", "30s"
+  seconds: number;
+  overallEmotionLabel: string;
+  primaryEmotion: EmotionType;
+  secondaryEmotion?: EmotionType;
   isCompound: boolean;
-  name?: string;
-  primary: EmotionType;
-  secondary?: EmotionType;
-  confidence: number;
+  signals: {
+    face: { emotion: EmotionType; confidence: number };
+    voice: { emotion: EmotionType; confidence: number };
+    text: { emotion: EmotionType; confidence: number };
+  };
 }
 
-export interface AnalysisRecord {
+export interface DetailedAnalysisResult {
   id: string;
   timestamp: string;
+  createdAt: string;
   modality: ModalityType;
-  overallEmotion: CompoundEmotion;
+  primaryEmotion: EmotionType;
+  secondaryEmotion?: EmotionType;
+  isCompound: boolean;
+  compoundName?: string;
+  confidence: number;
+  distribution: Array<{
+    emotion: EmotionType;
+    percentage: number;
+  }>;
   signals?: {
-    face?: SignalScore;
-    voice?: SignalScore;
-    text?: SignalScore;
+    face?: ModalitySignal;
+    voice?: ModalitySignal;
+    text?: ModalitySignal;
   };
-  agreementStatus: 'agreement' | 'conflict' | 'mixed';
-  explainableInsight: string;
-  summary: string;
+  alignment?: {
+    type: AlignmentType;
+    headline: string;
+    description: string;
+  };
+  whyExplanation?: {
+    faceCue: string;
+    voiceCue: string;
+    textCue: string;
+    aiSynthesis: string;
+  };
+  timeline?: TimelineMilestone[];
+  transcript?: string;
 }
+
+export type AnalysisRecord = DetailedAnalysisResult;

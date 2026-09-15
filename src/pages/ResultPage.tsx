@@ -1,152 +1,133 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Smile, Mic, FileText, ArrowLeft, RefreshCw, AlertCircle, Sparkles } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Bookmark, Sparkles, Check } from 'lucide-react';
 import { PageContainer } from '../components/PageContainer';
 import { GlassCard } from '../components/GlassCard';
-import { EmotionBadge } from '../components/EmotionBadge';
-import { ConfidenceBar } from '../components/ConfidenceBar';
 import { Button } from '../components/Button';
-import { MOCK_ANALYSIS_RESULT } from '../data/mockData';
+import { EmotionSpectrum } from '../components/EmotionSpectrum';
+import { SignalAlignment } from '../components/SignalAlignment';
+import { EmotionBlend } from '../components/EmotionBlend';
+import { WhyResult } from '../components/WhyResult';
+import { EmotionalJourney } from '../components/EmotionalJourney';
+import { analysisService } from '../services/analysisService';
 
 export const ResultPage: React.FC = () => {
-  const result = MOCK_ANALYSIS_RESULT;
+  const result = analysisService.getLatestCombinedResult();
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleSave = () => {
+    analysisService.saveResult(result);
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 2500);
+  };
 
   return (
     <PageContainer
-      tagline="Synthesized Analysis"
-      title="One Emotional Story"
-      subtitle="Multimodal fusion analysis and explainable AI insight comparing facial, vocal, and textual signals."
+      tagline="Synthesized Multimodal Result"
+      title="Your Emotional State"
+      subtitle="Comprehensive cross-signal intelligence comparing facial, vocal, and textual expressions."
+      maxWidth="max-w-5xl"
     >
-      <div className="space-y-6">
-        {/* Main Verdict Card */}
-        <GlassCard className="border-[#4F8CFF]/40 bg-[#4F8CFF]/[0.05] shadow-glow-sm">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-[#49D6FF] font-mono font-semibold">
-                <Sparkles size={14} /> Overall Affective State
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F4F7FF]">
-                {result.overallEmotion.name || result.overallEmotion.primary}
-              </h2>
-              <p className="text-sm text-[#8C9AB5] max-w-2xl leading-relaxed">
-                {result.explainableInsight}
-              </p>
+      <div className="space-y-8">
+        {/* ========================================================= */}
+        {/* 1. FINAL EMOTION & CONFIDENCE (Primary Hierarchy)          */}
+        {/* ========================================================= */}
+        <GlassCard className="text-center py-10 sm:py-14 border-[#4F8CFF]/40 bg-gradient-to-b from-[#4F8CFF]/[0.08] to-transparent shadow-glow-sm relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 bg-radial from-[#49D6FF]/10 via-transparent to-transparent blur-3xl -z-10" />
+
+          <div className="space-y-4">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#49D6FF] font-semibold block">
+              ✦ Multimodal AI Synthesis
+            </span>
+
+            {/* Emoji Duo */}
+            <div className="text-5xl sm:text-6xl tracking-widest">
+              😢 + 😊
             </div>
-            <div className="flex flex-col items-start md:items-end gap-2.5 shrink-0">
-              <EmotionBadge
-                emotion={result.overallEmotion.primary}
-                secondaryEmotion={result.overallEmotion.secondary}
-              />
-              <span className="text-xs text-[#8C9AB5] font-mono">
-                {Math.round(result.overallEmotion.confidence * 100)}% Confidence
-              </span>
-              <span className="inline-flex items-center gap-1.5 text-xs text-[#FCD34D] bg-[#FCD34D]/10 border border-[#FCD34D]/25 px-2.5 py-0.5 rounded-full font-mono">
-                <AlertCircle size={12} /> Cross-signal Divergence
+
+            {/* Headline State */}
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-[#60A5FA] via-[#F4F7FF] to-[#FCD34D] bg-clip-text text-transparent">
+              {result.compoundName || 'Sad · Happy'}
+            </h1>
+
+            {/* Confidence Badge */}
+            <div className="flex items-center justify-center gap-3">
+              <span className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-[#49D6FF]/15 border border-[#49D6FF]/30 font-mono text-sm text-[#49D6FF] font-semibold shadow-glow-cyan">
+                <Sparkles size={14} /> 82% Overall Confidence
               </span>
             </div>
+
+            <p className="text-sm text-[#8C9AB5] max-w-md mx-auto pt-1">
+              "Mixed emotional signals detected across sensory channels."
+            </p>
           </div>
         </GlassCard>
 
-        {/* Signals Breakdown Section */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-[#F4F7FF]">
-              Signal Breakdown
-            </h3>
-            <span className="text-xs text-[#8C9AB5] font-mono">
-              3 Signals Compared
-            </span>
-          </div>
+        {/* ========================================================= */}
+        {/* 2. SIGNALS SPECTRUM (WHAT I SEE, WHAT I HEAR, WHAT I READ) */}
+        {/* ========================================================= */}
+        {result.signals && (
+          <GlassCard className="p-6 sm:p-8">
+            <EmotionSpectrum signals={result.signals} />
+          </GlassCard>
+        )}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {result.signals && result.signals.face && result.signals.voice && result.signals.text && (
-              <>
-                {/* Face Signal */}
-                <GlassCard className="space-y-3 border-white/[0.08]">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg bg-[#FCD34D]/10 flex items-center justify-center text-[#FCD34D]">
-                        <Smile size={16} />
-                      </div>
-                      <span className="font-semibold text-sm text-[#F4F7FF]">Face Signal</span>
-                    </div>
-                    <EmotionBadge emotion={result.signals.face.primaryEmotion} size="sm" />
-                  </div>
-                  <div className="pt-2">
-                    <ConfidenceBar
-                      emotion={result.signals.face.primaryEmotion}
-                      confidence={result.signals.face.confidence}
-                    />
-                  </div>
-                  <p className="text-xs text-[#8C9AB5] pt-1">
-                    Relaxed ocular contraction, micro-smile detected.
-                  </p>
-                </GlassCard>
+        {/* ========================================================= */}
+        {/* 3. SIGNAL ALIGNMENT (How your signals align)              */}
+        {/* ========================================================= */}
+        <SignalAlignment alignment={result.alignment} />
 
-                {/* Voice Signal */}
-                <GlassCard className="space-y-3 border-white/[0.08]">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg bg-[#60A5FA]/10 flex items-center justify-center text-[#60A5FA]">
-                        <Mic size={16} />
-                      </div>
-                      <span className="font-semibold text-sm text-[#F4F7FF]">Voice Signal</span>
-                    </div>
-                    <EmotionBadge emotion={result.signals.voice.primaryEmotion} size="sm" />
-                  </div>
-                  <div className="pt-2">
-                    <ConfidenceBar
-                      emotion={result.signals.voice.primaryEmotion}
-                      confidence={result.signals.voice.confidence}
-                    />
-                  </div>
-                  <p className="text-xs text-[#8C9AB5] pt-1">
-                    Low pitch contour, diminished vocal energy, prolonged pauses.
-                  </p>
-                </GlassCard>
+        {/* ========================================================= */}
+        {/* 4. EMOTION BLEND (Color & Compound Convergence)           */}
+        {/* ========================================================= */}
+        <EmotionBlend
+          primaryEmotion={result.primaryEmotion}
+          secondaryEmotion={result.secondaryEmotion}
+          confidence={result.confidence}
+          isCompound={result.isCompound}
+          compoundName={result.compoundName}
+        />
 
-                {/* Text Signal */}
-                <GlassCard className="space-y-3 border-white/[0.08]">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg bg-[#4ADE80]/10 flex items-center justify-center text-[#4ADE80]">
-                        <FileText size={16} />
-                      </div>
-                      <span className="font-semibold text-sm text-[#F4F7FF]">Text Signal</span>
-                    </div>
-                    <EmotionBadge emotion={result.signals.text.primaryEmotion} size="sm" />
-                  </div>
-                  <div className="pt-2">
-                    <ConfidenceBar
-                      emotion={result.signals.text.primaryEmotion}
-                      confidence={result.signals.text.confidence}
-                    />
-                  </div>
-                  <p className="text-xs text-[#8C9AB5] pt-1">
-                    Semantic sadness polarity: sentiment indicates grief/nostalgia.
-                  </p>
-                </GlassCard>
-              </>
-            )}
-          </div>
-        </div>
+        {/* ========================================================= */}
+        {/* 5. WHY THIS RESULT (Expandable Explainable AI)            */}
+        {/* ========================================================= */}
+        <WhyResult explanation={result.whyExplanation} />
 
-        {/* Action Controls */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6">
+        {/* ========================================================= */}
+        {/* 6. EMOTIONAL JOURNEY (Temporal Timeline Progression)      */}
+        {/* ========================================================= */}
+        <EmotionalJourney timeline={result.timeline} />
+
+        {/* ========================================================= */}
+        {/* 7. ACTIONS (Bottom Nav)                                   */}
+        {/* ========================================================= */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/[0.06]">
           <Link to="/analyze" className="w-full sm:w-auto">
-            <Button variant="secondary" className="w-full sm:w-auto">
-              <ArrowLeft size={16} /> New Analysis
+            <Button variant="secondary" className="w-full sm:w-auto gap-2">
+              <ArrowLeft size={16} /> Back to Analyze
             </Button>
           </Link>
+
           <div className="flex items-center gap-3 w-full sm:w-auto">
+            <Button
+              variant="outline"
+              onClick={handleSave}
+              className="w-full sm:w-auto gap-2"
+            >
+              {isSaved ? (
+                <>
+                  <Check size={16} className="text-[#4ADE80]" /> Saved!
+                </>
+              ) : (
+                <>
+                  <Bookmark size={16} /> Save Result
+                </>
+              )}
+            </Button>
+
             <Link to="/analyze/combined" className="w-full sm:w-auto">
-              <Button variant="outline" className="w-full sm:w-auto">
-                <RefreshCw size={16} /> Re-run Studio
-              </Button>
-            </Link>
-            <Link to="/history" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto">
-                Save to History
+              <Button className="w-full sm:w-auto gap-2 shadow-glow-sm">
+                <RefreshCw size={16} /> Analyze Again
               </Button>
             </Link>
           </div>

@@ -220,6 +220,28 @@ export const analysisService = {
     return found || SEED_COMBINED_RESULT;
   },
 
+  // Set session result
+  setCurrentResult(result: DetailedAnalysisResult): void {
+    try {
+      sessionStorage.setItem('emotia_active_result', JSON.stringify(result));
+    } catch {
+      // ignore
+    }
+  },
+
+  // Get current active session result
+  getCurrentResult(): DetailedAnalysisResult {
+    try {
+      const stored = sessionStorage.getItem('emotia_active_result');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch {
+      // ignore
+    }
+    return this.getLatestCombinedResult();
+  },
+
   // Get current flagship result
   getLatestCombinedResult(): DetailedAnalysisResult {
     return SEED_COMBINED_RESULT;

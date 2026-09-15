@@ -10,10 +10,15 @@ import { EmotionBlend } from '../components/EmotionBlend';
 import { WhyResult } from '../components/WhyResult';
 import { EmotionalJourney } from '../components/EmotionalJourney';
 import { analysisService } from '../services/analysisService';
+import { EMOTION_CONFIG } from '../utils/emotionColors';
 
 export const ResultPage: React.FC = () => {
-  const result = analysisService.getLatestCombinedResult();
+  const result = analysisService.getCurrentResult();
   const [isSaved, setIsSaved] = useState(false);
+
+  const primaryConfig = EMOTION_CONFIG[result.primaryEmotion];
+  const secondaryConfig = result.secondaryEmotion ? EMOTION_CONFIG[result.secondaryEmotion] : null;
+  const pct = Math.round(result.confidence * 100);
 
   const handleSave = () => {
     analysisService.saveResult(result);
@@ -40,25 +45,31 @@ export const ResultPage: React.FC = () => {
               ✦ Multimodal AI Synthesis
             </span>
 
-            {/* Emoji Duo */}
+            {/* Dynamic Emoji Indicator */}
             <div className="text-5xl sm:text-6xl tracking-widest">
-              😢 + 😊
+              {result.isCompound && secondaryConfig ? (
+                <span>
+                  {primaryConfig.emoji} + {secondaryConfig.emoji}
+                </span>
+              ) : (
+                <span>{primaryConfig.emoji}</span>
+              )}
             </div>
 
             {/* Headline State */}
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-[#60A5FA] via-[#F4F7FF] to-[#FCD34D] bg-clip-text text-transparent">
-              {result.compoundName || 'Sad · Happy'}
+              {result.compoundName || primaryConfig.label}
             </h1>
 
             {/* Confidence Badge */}
             <div className="flex items-center justify-center gap-3">
               <span className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-[#49D6FF]/15 border border-[#49D6FF]/30 font-mono text-sm text-[#49D6FF] font-semibold shadow-glow-cyan">
-                <Sparkles size={14} /> 82% Overall Confidence
+                <Sparkles size={14} /> {pct}% Overall Confidence
               </span>
             </div>
 
             <p className="text-sm text-[#8C9AB5] max-w-md mx-auto pt-1">
-              "Mixed emotional signals detected across sensory channels."
+              "{result.alignment?.headline || 'Sensory signals synthesized.'}"
             </p>
           </div>
         </GlassCard>

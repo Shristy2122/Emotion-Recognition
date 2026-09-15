@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, RefreshCw, Upload, Sparkles } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Upload, Sparkles, Camera } from 'lucide-react';
 import { PageContainer } from '../components/PageContainer';
 import { GlassCard } from '../components/GlassCard';
 import { Button } from '../components/Button';
@@ -8,8 +8,31 @@ import { CameraPreview } from '../components/CameraPreview';
 
 export const FaceAnalysisPage: React.FC = () => {
   const [isCameraActive, setIsCameraActive] = useState(true);
+  const [uploadedImageSrc, setUploadedImageSrc] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analyzed, setAnalyzed] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setUploadedImageSrc(event.target?.result as string);
+        setIsCameraActive(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleTriggerUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleClearImage = () => {
+    setUploadedImageSrc(null);
+    setIsCameraActive(true);
+  };
 
   const handleAnalyze = () => {
     setIsAnalyzing(true);
@@ -31,27 +54,54 @@ export const FaceAnalysisPage: React.FC = () => {
       maxWidth="max-w-4xl"
     >
       <div className="space-y-6">
+        {/* Hidden File Input for Real Image Upload */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          accept="image/*"
+          onChange={handleFileUpload}
+          className="hidden"
+        />
+
         {!analyzed ? (
           <div className="space-y-6">
-            {/* Camera Viewfinder */}
+            {/* Real Webcam or Uploaded Image Viewfinder */}
             <CameraPreview
               isActive={isCameraActive}
-              isFaceDetected={true}
+              uploadedImageSrc={uploadedImageSrc}
+              onClearImage={handleClearImage}
               className="shadow-2xl"
             />
 
             {/* Controls */}
             <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
               <div className="flex items-center gap-3">
+                {uploadedImageSrc ? (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleClearImage}
+                    className="gap-1.5"
+                  >
+                    <Camera size={14} /> Back to Live Camera
+                  </Button>
+                ) : (
+                  <Button
+                    variant={isCameraActive ? 'secondary' : 'outline'}
+                    size="sm"
+                    onClick={() => setIsCameraActive(!isCameraActive)}
+                  >
+                    {isCameraActive ? 'Pause Camera' : 'Start Camera'}
+                  </Button>
+                )}
+
                 <Button
-                  variant={isCameraActive ? 'secondary' : 'outline'}
+                  variant="outline"
                   size="sm"
-                  onClick={() => setIsCameraActive(!isCameraActive)}
+                  onClick={handleTriggerUpload}
+                  className="gap-1.5"
                 >
-                  {isCameraActive ? 'Pause Camera' : 'Start Camera'}
-                </Button>
-                <Button variant="ghost" size="sm" className="gap-1.5">
-                  <Upload size={14} /> Upload Image
+                  <Upload size={14} /> {uploadedImageSrc ? 'Change Image' : 'Upload Image'}
                 </Button>
               </div>
 

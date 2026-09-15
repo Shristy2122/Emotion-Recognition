@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RootLayout } from './layouts/RootLayout';
 import { LandingPage } from './pages/LandingPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { LoginPage } from './pages/LoginPage';
 import { AnalyzeSelectionPage } from './pages/AnalyzeSelectionPage';
 import { FaceAnalysisPage } from './pages/FaceAnalysisPage';
 import { VoiceAnalysisPage } from './pages/VoiceAnalysisPage';
@@ -17,6 +19,8 @@ export const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<RootLayout />}>
           <Route index element={<LandingPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="login" element={<LoginPage />} />
           <Route path="analyze" element={<AnalyzeSelectionPage />} />
           <Route path="analyze/face" element={<FaceAnalysisPage />} />
           <Route path="analyze/voice" element={<VoiceAnalysisPage />} />

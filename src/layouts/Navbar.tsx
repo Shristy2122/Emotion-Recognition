@@ -8,6 +8,7 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
+    { name: 'Dashboard', path: '/dashboard' },
     { name: 'Analyze', path: '/analyze' },
     { name: 'History', path: '/history' },
   ];
@@ -53,8 +54,14 @@ export const Navbar: React.FC = () => {
           ))}
         </nav>
 
-        {/* Profile Action */}
+        {/* Right Action Profile & Login */}
         <div className="hidden md:flex items-center gap-3">
+          <Link
+            to="/login"
+            className="text-xs font-mono text-[#8C9AB5] hover:text-[#F4F7FF] px-2 py-1 transition"
+          >
+            Sign In
+          </Link>
           <Link
             to="/profile"
             className={`p-2 rounded-xl border border-white/[0.08] transition ${
@@ -62,7 +69,7 @@ export const Navbar: React.FC = () => {
                 ? 'bg-white/10 text-white border-[#4F8CFF]/40 shadow-glow-sm'
                 : 'bg-white/[0.03] text-[#8C9AB5] hover:text-[#F4F7FF]'
             }`}
-            title="Profile"
+            title="Profile & Preferences"
           >
             <User size={18} />
           </Link>
@@ -96,6 +103,13 @@ export const Navbar: React.FC = () => {
             </Link>
           ))}
           <Link
+            to="/login"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-4 py-2.5 rounded-xl text-sm font-medium text-[#8C9AB5] hover:text-white"
+          >
+            Sign In / Login
+          </Link>
+          <Link
             to="/profile"
             onClick={() => setMobileMenuOpen(false)}
             className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
@@ -104,7 +118,7 @@ export const Navbar: React.FC = () => {
                 : 'text-[#8C9AB5] hover:text-white'
             }`}
           >
-            Profile
+            Profile & Settings
           </Link>
         </div>
       )}

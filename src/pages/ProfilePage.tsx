@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { User, Shield, Moon, Trash2, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Shield, Moon, Trash2, CheckCircle2, LogOut, Phone, Mail } from 'lucide-react';
 import { PageContainer } from '../components/PageContainer';
 import { GlassCard } from '../components/GlassCard';
 import { Button } from '../components/Button';
 import { analysisService } from '../services/analysisService';
+import { authService } from '../services/authService';
 
 export const ProfilePage: React.FC = () => {
+  const navigate = useNavigate();
+  const currentUser = authService.getCurrentUser();
   const [historyCleared, setHistoryCleared] = useState(false);
 
   const handleClearHistory = () => {
@@ -13,6 +17,13 @@ export const ProfilePage: React.FC = () => {
       analysisService.clearHistory();
       setHistoryCleared(true);
       setTimeout(() => setHistoryCleared(false), 2500);
+    }
+  };
+
+  const handleLogOut = () => {
+    if (window.confirm('Are you sure you want to log out?')) {
+      authService.logoutUser();
+      navigate('/login');
     }
   };
 
@@ -27,17 +38,39 @@ export const ProfilePage: React.FC = () => {
         {/* Profile Card */}
         <GlassCard className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 p-6">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#4F8CFF] to-[#49D6FF] flex items-center justify-center text-white shadow-glow-sm">
-              <User size={28} />
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#4F8CFF] to-[#49D6FF] flex items-center justify-center text-white shadow-glow-sm text-2xl font-bold font-mono">
+              {currentUser?.name ? currentUser.name[0].toUpperCase() : 'U'}
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-[#F4F7FF]">Shristy</h3>
-              <p className="text-xs font-mono text-[#8C9AB5]">shristy@emotia.ai</p>
+            <div className="space-y-1">
+              <h3 className="text-xl font-bold text-[#F4F7FF]">
+                {currentUser?.name || 'Anonymous User'}
+              </h3>
+              <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-[#8C9AB5]">
+                <span className="flex items-center gap-1">
+                  <Mail size={12} className="text-[#49D6FF]" />
+                  {currentUser?.email || 'shristy@emotia.ai'}
+                </span>
+                {currentUser?.phone && (
+                  <span className="flex items-center gap-1">
+                    <Phone size={12} className="text-[#4ADE80]" />
+                    {currentUser.phone}
+                  </span>
+                )}
+              </div>
               <span className="inline-block mt-1 text-[10px] font-mono text-[#4ADE80] bg-[#4ADE80]/10 px-2 py-0.5 rounded-full border border-[#4ADE80]/20">
-                Active Client Session
+                Verified Account Session
               </span>
             </div>
           </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleLogOut}
+            className="gap-1.5 border-white/20 text-[#8C9AB5] hover:text-[#F87171] hover:border-[#F87171]/40"
+          >
+            <LogOut size={14} /> Log Out
+          </Button>
         </GlassCard>
 
         {/* Preferences & Theme Card */}
@@ -82,7 +115,7 @@ export const ProfilePage: React.FC = () => {
           </h4>
 
           <p className="text-xs text-[#8C9AB5] leading-relaxed">
-            Emotia is built with an on-device first privacy philosophy. Your facial frames, microphone audio buffers, and text transcripts are analyzed in client memory and never persisted externally.
+            Emotia is built with an on-device first privacy philosophy. Your facial frames, microphone audio buffers, and text transcripts are analyzed in client memory and never persisted externally without authorization.
           </p>
 
           <div className="pt-2 flex items-center justify-between border-t border-white/5">
@@ -95,7 +128,7 @@ export const ProfilePage: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={handleClearHistory}
-              className="border-[#F87171]/40 text-[#F87171] hover:bg-[#F87171]/10 gap-1.5"
+              className="border-[#F87171]/40 text-[#F87171] hover:bg-[#F87171]/10 gap-1.5 cursor-pointer"
             >
               {historyCleared ? (
                 <>

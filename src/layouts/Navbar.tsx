@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Sparkles, Menu, X, User } from 'lucide-react';
+import { authService } from '../services/authService';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
@@ -60,18 +61,21 @@ export const Navbar: React.FC = () => {
             to="/login"
             className="text-xs font-mono text-[#8C9AB5] hover:text-[#F4F7FF] px-2 py-1 transition"
           >
-            Sign In
+            Sign In / Sign Up
           </Link>
           <Link
             to="/profile"
-            className={`p-2 rounded-xl border border-white/[0.08] transition ${
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/[0.08] transition ${
               isActive('/profile')
                 ? 'bg-white/10 text-white border-[#4F8CFF]/40 shadow-glow-sm'
                 : 'bg-white/[0.03] text-[#8C9AB5] hover:text-[#F4F7FF]'
             }`}
             title="Profile & Preferences"
           >
-            <User size={18} />
+            <User size={15} />
+            <span className="text-xs font-mono font-medium">
+              {authService.getCurrentUser()?.name || 'Profile'}
+            </span>
           </Link>
         </div>
 

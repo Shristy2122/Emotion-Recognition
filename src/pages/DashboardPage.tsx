@@ -15,9 +15,11 @@ import { PageContainer } from '../components/PageContainer';
 import { GlassCard } from '../components/GlassCard';
 import { Button } from '../components/Button';
 import { analysisService } from '../services/analysisService';
+import { authService } from '../services/authService';
 import { EMOTION_CONFIG } from '../utils/emotionColors';
 
 export const DashboardPage: React.FC = () => {
+  const currentUser = authService.getCurrentUser();
   const latestResult = analysisService.getLatestCombinedResult();
   const history = analysisService.getHistory();
 
@@ -87,7 +89,7 @@ export const DashboardPage: React.FC = () => {
               Live Workspace
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-[#F4F7FF] tracking-tight">
-              Welcome back, Shristy
+              Welcome back, {currentUser?.name || 'Explorer'}
             </h1>
             <p className="text-xs sm:text-sm text-[#8C9AB5]">
               Here is your multimodal emotional intelligence dashboard and activity summary.

@@ -28,8 +28,8 @@ export const SignalAlignment: React.FC<SignalAlignmentProps> = ({ alignment }) =
             <span className="text-[11px] font-mono uppercase tracking-widest text-[#49D6FF] font-semibold">
               How Your Signals Align
             </span>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full border border-white/10 bg-white/[0.04] text-[#8C9AB5]">
-              {isAgreement ? 'Concordant' : 'Divergent / Blended'}
+            <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full border border-white/10 bg-white/[0.04] text-[#8C9AB5]">
+              {isAgreement ? 'Signals Agree' : 'Mixed Signals'}
             </span>
           </div>
 

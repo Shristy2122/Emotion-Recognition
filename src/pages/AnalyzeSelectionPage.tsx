@@ -23,29 +23,29 @@ export const AnalyzeSelectionPage: React.FC = () => {
     {
       id: 'face',
       icon: <Smile size={28} className="text-[#FCD34D]" />,
-      title: 'FACE',
-      subtitle: 'Read facial expressions',
+      title: 'Face',
+      subtitle: 'What I See — Facial expressions & subtle cues',
       path: '/analyze/face',
     },
     {
       id: 'voice',
       icon: <Mic size={28} className="text-[#60A5FA]" />,
-      title: 'VOICE',
-      subtitle: 'Understand vocal emotion',
+      title: 'Voice',
+      subtitle: 'What I Hear — Vocal emotion & tone',
       path: '/analyze/voice',
     },
     {
       id: 'text',
       icon: <FileText size={28} className="text-[#4ADE80]" />,
-      title: 'TEXT',
-      subtitle: 'Analyze emotional meaning',
+      title: 'Text',
+      subtitle: 'What I Read — Emotional meaning in words',
       path: '/analyze/text',
     },
     {
       id: 'combined',
       icon: <Sparkles size={28} className="text-[#49D6FF]" />,
-      title: 'COMBINED',
-      subtitle: 'Connect all three signals',
+      title: 'Combined',
+      subtitle: 'Face + Voice + Text — Three signals into one emotional story',
       path: '/analyze/combined',
       isCombined: true,
     },
@@ -60,9 +60,9 @@ export const AnalyzeSelectionPage: React.FC = () => {
 
   return (
     <PageContainer
-      tagline="Step 1 of 3: Choose"
+      tagline="Choose Analysis Mode"
       title="How would you like to analyze?"
-      subtitle="Choose a signal or combine them for a deeper emotional picture."
+      subtitle="Choose an individual signal or combine all three for the full emotional story."
       maxWidth="max-w-5xl"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">

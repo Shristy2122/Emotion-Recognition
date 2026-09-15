@@ -406,12 +406,12 @@ export const CombinedAnalysisPage: React.FC = () => {
                 <div className="p-4 rounded-2xl bg-gradient-to-r from-[#4F8CFF]/15 via-[#0A1120] to-[#49D6FF]/15 border border-[#4F8CFF]/30 text-center space-y-2 shadow-glow-sm">
                   <div className="flex items-center justify-center gap-1.5 text-xs font-mono text-[#49D6FF] font-semibold tracking-wider">
                     <Sparkles size={15} className="animate-spin text-[#49D6FF]" />
-                    <span>AI FUSION ADAPTIVE</span>
+                    <span>✦ AI FUSION</span>
                   </div>
                   <p className="text-xs text-[#8C9AB5]">
                     {faceEmotion === voiceSignal.primaryEmotion && voiceSignal.primaryEmotion === textSignal.primaryEmotion
-                      ? `Signals harmonious: Strong agreement on ${faceConfig.label}.`
-                      : `Signals comparing: Dynamic fusion across Face (${faceConfig.label}), Voice (${voiceConfig.label}), and Words.`}
+                      ? `Signals agree: Harmonious expression of ${faceConfig.label.toLowerCase()}.`
+                      : `Mixed signals detected: Comparing what I see (${faceConfig.label.toLowerCase()}), hear (${voiceConfig.label.toLowerCase()}), and read.`}
                   </p>
                 </div>
               </div>

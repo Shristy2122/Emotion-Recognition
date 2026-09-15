@@ -34,13 +34,13 @@ export const DashboardPage: React.FC = () => {
       label: 'Dominant State',
       value: 'Sad · Happy',
       icon: <Layers size={18} className="text-[#FCD34D]" />,
-      change: 'Compound Affective',
+      change: 'Mixed / Compound',
     },
     {
       label: 'Cross-Signal Harmony',
       value: '84%',
       icon: <TrendingUp size={18} className="text-[#4ADE80]" />,
-      change: 'High Concordance',
+      change: 'Signals in Agreement',
     },
     {
       label: 'Active Modalities',

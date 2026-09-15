@@ -43,7 +43,7 @@ export const EmotionSpectrum: React.FC<EmotionSpectrumProps> = ({ signals }) => 
         <span className="text-xs font-mono uppercase tracking-widest text-[#49D6FF] font-semibold">
           Your Emotional Signals
         </span>
-        <span className="text-xs text-[#8C9AB5]">Affective Spectrum (Valence Tendency)</span>
+        <span className="text-xs text-[#8C9AB5]">Cross-Channel Comparison</span>
       </div>
 
       <div className="space-y-5">

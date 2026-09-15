@@ -28,9 +28,9 @@ export const ResultPage: React.FC = () => {
 
   return (
     <PageContainer
-      tagline="Synthesized Multimodal Result"
+      tagline="Understand Your Emotional Story"
       title="Your Emotional State"
-      subtitle="Comprehensive cross-signal intelligence comparing facial, vocal, and textual expressions."
+      subtitle="One cohesive emotional story synthesized from your face, voice, and words."
       maxWidth="max-w-5xl"
     >
       <div className="space-y-8">
@@ -42,7 +42,7 @@ export const ResultPage: React.FC = () => {
 
           <div className="space-y-4">
             <span className="text-xs font-mono uppercase tracking-widest text-[#49D6FF] font-semibold block">
-              ✦ Multimodal AI Synthesis
+              ✦ One Emotional Story
             </span>
 
             {/* Dynamic Emoji Indicator */}

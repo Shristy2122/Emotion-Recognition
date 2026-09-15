@@ -31,7 +31,7 @@ export const WhyResult: React.FC<WhyResultProps> = ({ explanation }) => {
               Why this result?
             </h4>
             <p className="text-xs text-[#8C9AB5]">
-              Explainable AI breakdown of how individual sensory channels were synthesized.
+              Clear breakdown of what your face, voice, and words revealed — and why AI reached this conclusion.
             </p>
           </div>
         </div>
